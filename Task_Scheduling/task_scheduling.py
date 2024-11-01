@@ -6,7 +6,7 @@ potential_start_times = [6, 2, 7, 4, 0, 3]
 
 
 
-
+# tasks * sum(process_times) complexity
 
 def plan_tasks(task_names, task_process_times, potential_start_times):
     # dictionary which will hold all info for each task in the form (potential_start_time : (task,process_times))
@@ -26,7 +26,7 @@ def plan_tasks(task_names, task_process_times, potential_start_times):
     
     # Now I can iterate through all the tasks tracking the current time interval
     # the total time is equal to the sum of all the processing times so we will iterate from t = 0 through t = sum(task_process_times)
-    for t in range(sum(task_process_times) + 1):
+    for t in range(1, sum(task_process_times) + 1):
         tasks_to_remove = []
         for start_time in list(task_info.keys()):
             # if task's potential start time is less than or equal to the current time we can add it to possible_tasks
@@ -59,6 +59,35 @@ def plan_tasks(task_names, task_process_times, potential_start_times):
     return task_log
 
 
-print(plan_tasks(task_names,task_process_times,potential_start_times))
+def avg_completion_time(task_log, task_names):
+    # total intervals to complete each task
+    task_intervals = []
+    # reverse task log to help us find index of last task occurence
+    task_log_reversed = list(reversed(task_log))
+    for task in task_names:
+        # find first occurence of a task 
+        start,end = task_log.index(task), (len(task_log) - task_log_reversed.index(task))
+        task_intervals.append(end-start)
+    return sum(task_intervals) / len(task_names)
 
+
+def show_results(avg_completion, task_log):
+    time_interval = 1
+    for i in task_log:
+        print(f"Process task {i} at time interval {time_interval}")
+        time_interval += 1 
+    print(f"Optimized Average Task Completion time of: {avg_completion}")
+
+
+    
+    
+task_log = plan_tasks(task_names,task_process_times,potential_start_times)
+avg_completion = avg_completion_time(task_log,task_names)
+show_results(avg_completion,task_log)
+
+
+# Even though the complexity of this algorithm scales better than the dynamic approach would
+# I have noticed that using a min_heap would make the efficiency even better and also reduce the space complexity
+# I plan to implement this approach but first I want to create the min_heap class with node's suited for the context of this problem
+# instead of just importing a min_heap library. 
 

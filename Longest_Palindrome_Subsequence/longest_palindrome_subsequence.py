@@ -1,5 +1,7 @@
 import numpy as np 
 
+# Complexity: O(len(s) * len(s))
+
 def return_longest_palindrome(s):
     n = len(s)
     dp = np.zeros((len(s), len(s)), dtype=int)

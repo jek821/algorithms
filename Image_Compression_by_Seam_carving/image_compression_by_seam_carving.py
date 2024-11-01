@@ -33,7 +33,7 @@ def vertical_seam(array):
                 min_prev = min(min_prev, dp[row + 1, col - 1]) #if not at left edge then check for left-down case vs current min
             if col < j - 1:    
                 min_prev = min(min_prev, dp[row + 1, col + 1]) #if not at right edge then check for right-down case vs current min
-           #add the min path we found to the distruction value at the current cell and add it to the current dp matrix cell (total destruction up to this point)
+           #add the min path we found to the distruction value at the current cell and add it to the current dp matrix cell (total disruption up to this point)
             dp[row, col] = array[row, col] + min_prev 
     # Backtrack to find the optimal seam path
     seam_cells = []
@@ -73,7 +73,7 @@ def horizontal_seam(array):
             if row < i - 1:
                 min_prev = min(min_prev, dp[row+1,column+1])
             #now add the min prev to the distruction at the current pixel and put this in the curr cell of the dp matrix
-            #this is the total destruction up to this cell
+            #this is the total disruption up to this cell
             dp[row,column] = array[row, column] + min_prev
     #once the matrix is filled in, the ideal starting pixel will be the cell with the smallest value in the last column
     start_row = np.argmin(dp[:, j-1])
