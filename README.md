@@ -1,8 +1,29 @@
-# algorithms
-## Longest Palindrome Subsequence:
+# Algorithms
+
+## Longest Palindrome Subsequence
 **Language:** Python
 
-**Implementation:** Used dynamic programming to fill in table and then backtrack from cell with best length to find palindrome substring output. 
+This algorithm uses **dynamic programming** to find the longest palindromic subsequence in a given string. It fills a table with subsequence lengths and then backtracks to construct the palindrome.
+
+### Key Components
+
+1. **Dynamic Programming Table Construction**
+   - The algorithm constructs a DP table where each cell stores the length of the longest palindromic subsequence within a given substring.
+   - If two characters at the ends of a substring are equal, they can both be part of the subsequence, and the value is updated accordingly.
+   - If the characters are not equal, the algorithm uses the maximum length from subproblems excluding either character, maintaining the longest subsequence found so far.
+   - By the end of this process, the top-right cell contains the length of the longest palindromic subsequence for the entire string.
+
+2. **Backtracking to Find the Palindrome**
+   - Starting from the cell representing the full substring, the algorithm backtracks through the table to construct the longest palindromic subsequence:
+     - If two characters match, they are added to the result and pointers move inward.
+     - If they do not match, the algorithm moves toward the cell with the higher value, continuing along the path of the optimal solution.
+
+3. **Constructing the Final Palindrome**
+   - The characters collected from backtracking are mirrored to form the complete palindromic subsequence:
+     - If the subsequence length is odd, a central character is retained in the middle.
+     - If the length is even, the mirrored sequences are combined without a central character.
+   
+This method efficiently finds the longest palindromic subsequence and reconstructs it, balancing both time complexity and clarity in the output.
 
 
 # Seam Carving for Image Compression
