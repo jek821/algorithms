@@ -37,7 +37,7 @@ def vertical_seam(array):
             dp[row, col] = array[row, col] + min_prev 
     # Backtrack to find the optimal seam path
     seam_cells = []
-    col = np.argmin(dp[0][:])  # Starting point with minimum energy in the top row
+    col = np.argmin(dp[0,:])  # Starting point with minimum energy in the top row
     seam_cells.append((0, col))                
     # For each row, track the path by moving to the minimum energy column in the next row
     for row in range(1,i):
@@ -76,7 +76,7 @@ def horizontal_seam(array):
             #this is the total destruction up to this cell
             dp[row,column] = array[row, column] + min_prev
     #once the matrix is filled in, the ideal starting pixel will be the cell with the smallest value in the last column
-    start_row = np.argmin(dp[:][j-1])
+    start_row = np.argmin(dp[:, j-1])
     #lets make an array to keep track of ideal seam's pixels to delete later
     seam_cells = []
     # put the optimal start_cell in the seam_cell array 
@@ -134,4 +134,4 @@ def compression(num_reductions, img_path):
 
 
 
-compression(100, "test_image.jpg")
+compression(20, "test_image.jpg")

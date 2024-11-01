@@ -6,8 +6,6 @@ min_possible_demand = 1
 max_possible_demand = 30
 demand_per_month = np.random.randint(min_possible_demand, max_possible_demand, num_months)
 
-
-
 def c(x):
     # 3 cost per machine produced over m 
     return x*5
@@ -29,12 +27,19 @@ def fill_dp_matrix(num_months, free_production_quantity, demand_per_month_array)
     m = free_production_quantity
     for inventory in range(big_d + 1):
         for month in range(num_months - 1, -1, -1):
+            # recurrence relation case 1 where demand at month i == (free_production_quantity + inventory)
+            # F(i+1,0)
             if demand_per_month_array[month] == (inventory + m):
                 dp[month, inventory] = dp[month + 1, 0]
                 production_table[month, inventory] = (demand_per_month_array[month] - inventory)
+            # recurrence relation case 2 where demand at month i > (free_production_quantity + inventory)
+            # F((i+1,0) + C(current_demand - (current_inventory + free_production_quantity)))
             elif demand_per_month_array[month] > (m + inventory):
                 dp[month, inventory] = dp[month + 1, 0] + c(demand_per_month_array[month] - (inventory + m))
                 production_table[month, inventory] = (demand_per_month_array[month] - inventory)
+            # recurrence relation for case three where we may want to produce between 0 and free_production_quantity machines
+            # *WHERE j ITERATES FROM 0 TO min(free_production_quantity + 1, Total_Demand "big_d" + 1)
+            # F(min((i+1,(current_inventory - current_demand + j) + h(current_inventory - current_demand + j))...)
             else:
                 min_cost = float('inf')
                 for potential_production in range(min(m + 1, big_d + 1)):  # Avoid out-of-bounds access
@@ -45,18 +50,13 @@ def fill_dp_matrix(num_months, free_production_quantity, demand_per_month_array)
     best_cost = dp[0, 0]
     return (production_table, best_cost)
 
-
-
-
-
 def print_results(results):
     production_table, best_cost = results
     best_cost = int(best_cost)
     num_months = production_table.shape[0]
-    for i in range(num_months - 1):  # Exclude the last row if it's just a base case
+    for i in range(num_months - 1):  # Exclude the last row since it's just a base case
         production_quantity = np.argmin(production_table[i, :])  # Production quantity based on the minimum cost
         print(f"In month {i + 1}, produce {production_quantity} machines.")
     print(f"For a total cost of: {best_cost}")
-
 
 print_results(fill_dp_matrix(num_months,free_production_per_month,demand_per_month))
